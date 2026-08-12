@@ -2,13 +2,21 @@
   "schema_version": 1,
   "abi": "wilson_dirac_v1",
   "format": "npz+meta",
-  "description": "Immutable golden corpus.",
+  "description": "Wilson–Dirac v1 core L2/L4 + hydra heads L6/L8/L10.",
+  "hydra_heads": [6, 8, 10],
   "suites": [
-    {"path": "L2/cold", "L": 2, "kind": "cold", "seed_base": 1001},
-    {"path": "L2/random", "L": 2, "kind": "random", "seed_base": 1002},
-    {"path": "L2/boundary", "L": 2, "kind": "boundary", "seed_base": 1003},
-    {"path": "L4/cold", "L": 4, "kind": "cold", "seed_base": 2001},
-    {"path": "L4/random", "L": 4, "kind": "random", "seed_base": 2002},
-    {"path": "L4/boundary", "L": 4, "kind": "boundary", "seed_base": 2003}
+    {"path": "L2/boundary", "L": 2, "kind": "boundary", "seed_base": 1003, "hydra_head": false},
+    {"path": "L2/cold", "L": 2, "kind": "cold", "seed_base": 1001, "hydra_head": false},
+    {"path": "L2/random", "L": 2, "kind": "random", "seed_base": 1002, "hydra_head": false},
+    {"path": "L4/boundary", "L": 4, "kind": "boundary", "seed_base": 2003, "hydra_head": false},
+    {"path": "L4/cold", "L": 4, "kind": "cold", "seed_base": 2001, "hydra_head": false},
+    {"path": "L4/random", "L": 4, "kind": "random", "seed_base": 2002, "hydra_head": false},
+    {"path": "L6/boundary", "L": 6, "kind": "boundary", "seed_base": 3003, "hydra_head": true},
+    {"path": "L6/cold", "L": 6, "kind": "cold", "seed_base": 3001, "hydra_head": true},
+    {"path": "L6/random", "L": 6, "kind": "random", "seed_base": 3002, "hydra_head": true},
+    {"path": "L8/boundary", "L": 8, "kind": "boundary", "seed_base": 4003, "hydra_head": true},
+    {"path": "L8/cold", "L": 8, "kind": "cold", "seed_base": 4001, "hydra_head": true},
+    {"path": "L10/boundary", "L": 10, "kind": "boundary", "seed_base": 5003, "hydra_head": true},
+    {"path": "L10/cold", "L": 10, "kind": "cold", "seed_base": 5001, "hydra_head": true}
   ]
 }
