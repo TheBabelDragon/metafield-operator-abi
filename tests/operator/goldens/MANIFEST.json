@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "abi": "wilson_dirac_v1",
+  "format": "npz+meta",
+  "description": "Immutable golden corpus.",
+  "suites": [
+    {"path": "L2/cold", "L": 2, "kind": "cold", "seed_base": 1001},
+    {"path": "L2/random", "L": 2, "kind": "random", "seed_base": 1002},
+    {"path": "L2/boundary", "L": 2, "kind": "boundary", "seed_base": 1003},
+    {"path": "L4/cold", "L": 4, "kind": "cold", "seed_base": 2001},
+    {"path": "L4/random", "L": 4, "kind": "random", "seed_base": 2002},
+    {"path": "L4/boundary", "L": 4, "kind": "boundary", "seed_base": 2003}
+  ]
+}
