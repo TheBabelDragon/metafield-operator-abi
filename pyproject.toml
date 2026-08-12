@@ -1,0 +1,15 @@
+[project]
+name = "metafield-operator-abi"
+version = "0.1.0"
+description = "MetaField operator ABI — Wilson–Dirac v1 frozen"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.0",
+  "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
