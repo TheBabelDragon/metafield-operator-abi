@@ -1,57 +1,42 @@
 # metafield-operator-abi
 
-**This is the ABI workbench.** Named so it does not collide with an existing local `metafield-work/`.
+Wilson–Dirac ABI v1 workbench. **Does not collide with local `metafield-work/`.**
 
-**MetaField defines the mathematics. Backends implement the operators.**
-
-Wilson–Dirac is the first frozen instruction in the MetaField operator language.
-
-```
-MetaField Operator ABI family
-│
-├── Wilson–Dirac ABI v1     🔒 IMMUTABLE
-├── Reduction ABI             later
-├── Plaquette ABI             later
-└── Gauge-force ABI           later
-```
-
-See [`docs/FOUNDATION.md`](docs/FOUNDATION.md).
-
-## Quick start
+## Run (from repo root only)
 
 ```bash
 git clone https://github.com/TheBabelDragon/metafield-operator-abi.git
 cd metafield-operator-abi
-python3 -m venv .venv && source .venv/bin/activate
+
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-PYTHONPATH=. python scripts/generate_goldens.py
-PYTHONPATH=. python -m pytest tests/operator -q
+
+# PYTHONPATH must be repo root (the directory that contains scripts/ and metafield/)
+export PYTHONPATH="$(pwd)"
+
+python scripts/generate_goldens.py
+python -m pytest tests/operator -q
 ```
 
-## Constitution
+If you see `No such file or directory: .../scripts/generate_goldens.py`:
 
-`tests/operator/goldens/` is the compliance boundary.
+1. You are not in the repo root — `cd` into `metafield-operator-abi` first
+2. Or you have a stale clone — `git pull` then confirm:
 
-| Check | Gate |
-|-------|------|
-| `Dψ` | relative error vs oracle |
-| γ₅-hermiticity | residual |
-| `Q = D†D` hermiticity | residual |
-| CG trajectory | residual history |
-
-## Frozen vs experimental
-
-**Frozen:** Wilson math, layouts, γ matrices, seeds, golden requirements, PyTorch oracle.
-
-**Experimental:** `OperatorBackend` surface, DMA, device handles, FPGA/ASIC transport.
-
-## Next (and only next)
-
-```
-wilson_dirac(ψ, U) → Dψ on device
-L2 cold → random → boundary → L4 → profile
+```bash
+ls scripts/generate_goldens.py
+ls backends/reference/torch_backend.py
 ```
 
-Oracle lineage: [TheBabelDragon/metafield](https://github.com/TheBabelDragon/metafield).
+## Path order
 
-Former mistaken name on GitHub: `metafield-work` (kept as redirect target / duplicate until you delete it).
+```text
+metafield-operator-abi/          ← cwd and PYTHONPATH=.
+├── scripts/generate_goldens.py
+├── backends/reference/torch_backend.py
+├── metafield/
+└── tests/operator/
+```
+
+Do **not** run `python scripts/generate_goldens.py` from outside this tree.
