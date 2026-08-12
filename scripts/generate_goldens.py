@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Regenerate Wilson–Dirac ABI v1 golden corpus from the PyTorch oracle.
 
+Core: L=2,4. Hydra heads: L=6,8,10.
+
   PYTHONPATH=. python scripts/generate_goldens.py
 """
 from __future__ import annotations
@@ -29,6 +31,13 @@ SEEDS = {
     (4, "cold"): 2001,
     (4, "random"): 2002,
     (4, "boundary"): 2003,
+    (6, "cold"): 3001,
+    (6, "random"): 3002,
+    (6, "boundary"): 3003,
+    (8, "cold"): 4001,
+    (8, "boundary"): 4003,
+    (10, "cold"): 5001,
+    (10, "boundary"): 5003,
 }
 
 
@@ -112,7 +121,7 @@ def suite_for(L: int, kind: str, seed_base: int) -> None:
     p = r.clone()
     rs_old = float(be.complex_dot(r, r).real)
     b_n = max(float(be.complex_norm(b)), 1e-30)
-    maxiter = 80
+    maxiter = {2: 80, 4: 80, 6: 100, 8: 120, 10: 140}.get(L, 160)
     final_iters = maxiter
     for it in range(maxiter):
         Ap = matvec(p)
@@ -148,13 +157,15 @@ def suite_for(L: int, kind: str, seed_base: int) -> None:
         "outputs__Qpsi": to_np(Qpsi),
         "outputs__cg_x": to_np(x),
     }
-    np.savez_compressed(out_dir / "golden.npz", **arrays)
+    if L <= 4:
+        np.savez_compressed(out_dir / "golden.npz", **arrays)
     meta = {
         "schema_version": 1,
         "abi": "wilson_dirac_v1",
         "L": L,
         "kind": kind,
         "seed_base": seed_base,
+        "hydra_head": L in (6, 8, 10),
         "params": {
             "mass": params.mass,
             "wilson_r": params.wilson_r,
@@ -165,37 +176,40 @@ def suite_for(L: int, kind: str, seed_base: int) -> None:
         },
         "metrics": {
             "g5_hermiticity_err": g5_err,
-            "Q_hermiticity_err": q_herm_err,
+            "Q_hermiticity_err": float(q_herm_err.real if hasattr(q_herm_err, "real") else q_herm_err),
             "cg_iters": final_iters,
             "cg_final_resid": residuals[-1] if residuals else None,
             "cg_residual_trajectory": residuals,
+            "cg_maxiter": maxiter,
             "plaquette_action": float(S.real if hasattr(S, "real") else S),
             "norm_Dpsi": float(be.complex_norm(Dpsi)),
             "norm_psi": float(be.complex_norm(psi)),
+            "volume": L ** 4,
         },
-        "arrays": sorted(arrays.keys()),
+        "arrays": sorted(arrays.keys()) if L <= 4 else [],
     }
     (out_dir / "golden.meta.json").write_text(json.dumps(meta, indent=2))
-    print(f"wrote {out_dir.relative_to(ROOT)}/golden.npz + golden.meta.json")
+    print(f"L{L}/{kind} cg={final_iters} resid={residuals[-1] if residuals else None}")
 
 
 def main() -> None:
-    for (L, kind), seed in SEEDS.items():
+    for (L, kind), seed in sorted(SEEDS.items(), key=lambda kv: (kv[0][0], kv[0][1])):
         suite_for(L, kind, seed)
     manifest = {
         "schema_version": 1,
         "abi": "wilson_dirac_v1",
         "format": "npz+meta",
-        "description": "Immutable golden corpus.",
+        "description": "Wilson–Dirac v1 core L2/L4 + hydra heads L6/L8/L10.",
+        "hydra_heads": [6, 8, 10],
         "suites": [
             {
                 "path": f"L{L}/{kind}",
                 "L": L,
                 "kind": kind,
                 "seed_base": SEEDS[(L, kind)],
+                "hydra_head": L in (6, 8, 10),
             }
-            for L in (2, 4)
-            for kind in ("cold", "random", "boundary")
+            for (L, kind) in sorted(SEEDS.keys(), key=lambda t: (t[0], t[1]))
         ],
     }
     (GOLDEN_ROOT / "MANIFEST.json").write_text(json.dumps(manifest, indent=2))
