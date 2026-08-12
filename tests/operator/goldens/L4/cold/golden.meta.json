@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "abi": "wilson_dirac_v1",
+  "L": 4,
+  "kind": "cold",
+  "seed_base": 2001,
+  "params": {
+    "mass": 0.1,
+    "wilson_r": 1.0,
+    "color_dim": 3,
+    "spinor_dim": 4,
+    "n_dims": 4,
+    "beta": 5.5
+  },
+  "metrics": {
+    "g5_hermiticity_err": 0.0,
+    "Q_hermiticity_err": 1.492072072824918e-12,
+    "cg_iters": 16,
+    "cg_final_resid": 2.3747380925554943e-11,
+    "cg_residual_trajectory": [0.44517591043375326, 0.25697713764652724, 0.16127626943652196, 0.10548372685323187, 0.07084959374801426, 0.04514104667950344, 0.026374703701094498, 0.025795060884509502, 0.012220875171613948, 0.006321472860768628, 0.0036792050069599487, 0.0025005441471797943, 0.0017987371175987338, 0.005007265267578863, 1.492769230470932e-08, 2.3747380925554943e-11],
+    "plaquette_action": 0.0,
+    "norm_Dpsi": 358.37282138346114,
+    "norm_psi": 78.16633271458983
+  },
+  "arrays": ["inputs__U", "inputs__eta", "inputs__phi", "inputs__psi", "outputs__Ddag_psi", "outputs__Dpsi", "outputs__Qpsi", "outputs__cg_x"]
+}

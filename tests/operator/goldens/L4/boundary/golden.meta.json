@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "abi": "wilson_dirac_v1",
+  "L": 4,
+  "kind": "boundary",
+  "seed_base": 2003,
+  "params": {
+    "mass": 0.1,
+    "wilson_r": 1.0,
+    "color_dim": 3,
+    "spinor_dim": 4,
+    "n_dims": 4,
+    "beta": 5.5
+  },
+  "metrics": {
+    "g5_hermiticity_err": 0.0,
+    "Q_hermiticity_err": 5.0242958677880805e-15,
+    "cg_iters": 16,
+    "cg_final_resid": 1.630615754867376e-11,
+    "cg_residual_trajectory": [0.4468472945580858, 0.2581887015031703, 0.16377314522013195, 0.1100375628951042, 0.073319724677582, 0.04724817443461482, 0.028131215043595066, 0.027532024486177056, 0.012656904650547108, 0.006457032756721809, 0.003920466611822868, 0.0027273015094179767, 0.002158391394809252, 0.006181556620290326, 3.1315447975555084e-09, 1.630615754867376e-11],
+    "plaquette_action": 0.0,
+    "norm_Dpsi": 5.358899140681788,
+    "norm_psi": 1.174734012447073
+  },
+  "arrays": ["inputs__U", "inputs__eta", "inputs__phi", "inputs__psi", "outputs__Ddag_psi", "outputs__Dpsi", "outputs__Qpsi", "outputs__cg_x"]
+}
